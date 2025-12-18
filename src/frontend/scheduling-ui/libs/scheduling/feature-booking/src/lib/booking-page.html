@@ -1,0 +1,120 @@
+<div class="header">
+  <div>
+    <h1>Book an Appointment</h1>
+    <p class="muted">
+      Provider → slots → booking. Built to demo CQRS + conflict handling.
+    </p>
+  </div>
+</div>
+
+<mat-card class="card">
+  <mat-card-title>Search</mat-card-title>
+  <mat-card-content [formGroup]="searchForm" class="grid">
+    <mat-form-field>
+      <mat-label>Provider</mat-label>
+      <mat-select formControlName="providerId">
+        <mat-option *ngFor="let p of providers()" [value]="p.id"
+          >{{ p.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>From (UTC ISO)</mat-label>
+      <input matInput formControlName="fromUtc" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>To (UTC ISO)</mat-label>
+      <input matInput formControlName="toUtc" />
+    </mat-form-field>
+
+    <div class="actions">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="loadSlots()"
+        [disabled]="searchForm.invalid || loadingSlots()"
+      >
+        Load slots
+      </button>
+
+      <button
+        mat-button
+        (click)="generateDefaultSlots()"
+        [disabled]="!searchForm.value.providerId"
+      >
+        Generate 14 days slots (admin)
+      </button>
+
+      <mat-progress-spinner
+        *ngIf="loadingSlots()"
+        diameter="22"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="card">
+  <mat-card-title>Available slots</mat-card-title>
+  <mat-card-content>
+    <div *ngIf="!loadingSlots() && slots().length === 0" class="empty">
+      No slots found.
+    </div>
+
+    <div class="slots" *ngIf="slots().length > 0">
+      <button
+        mat-stroked-button
+        class="slot"
+        *ngFor="let s of slots(); trackBy: trackById"
+        (click)="selectSlot(s)"
+        [class.slot--selected]="selectedSlot()?.id === s.id"
+      >
+        <div class="slot__primary">{{ s.startUtc | date: 'medium' }}</div>
+        <div class="slot__secondary">{{ s.endUtc | date: 'shortTime' }}</div>
+      </button>
+    </div>
+
+    <mat-divider class="divider"></mat-divider>
+
+    <form [formGroup]="bookForm" class="book">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="customerName" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="customerEmail" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="customerPhone" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Reason</mat-label>
+        <input matInput formControlName="reason" />
+      </mat-form-field>
+
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="book()"
+          [disabled]="booking() || bookForm.invalid || !selectedSlot()"
+        >
+          Book
+        </button>
+
+        <mat-progress-spinner
+          *ngIf="booking()"
+          diameter="22"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

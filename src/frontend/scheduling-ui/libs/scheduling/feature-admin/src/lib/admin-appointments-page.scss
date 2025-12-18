@@ -1,0 +1,50 @@
+.header {
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+.muted {
+  margin: 0;
+  opacity: 0.75;
+}
+
+.card {
+  margin-bottom: 16px;
+}
+
+.filters {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 2fr 1fr auto;
+  align-items: end;
+}
+
+.filters__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.tableWrap {
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+}
+
+.actionsCol {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}

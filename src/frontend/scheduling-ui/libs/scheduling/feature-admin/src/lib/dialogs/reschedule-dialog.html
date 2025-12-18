@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>Reschedule appointment</h2>
+
+<div mat-dialog-content class="content">
+  <div class="meta">
+    <div>
+      <strong>Provider:</strong> {{ data.providerName || data.providerId }}
+    </div>
+    <div *ngIf="data.currentSlotStartUtc">
+      <strong>Current slot:</strong> {{ data.currentSlotStartUtc | date:
+      'medium' }}
+    </div>
+  </div>
+
+  <mat-divider class="divider"></mat-divider>
+
+  <form [formGroup]="rangeForm" class="range">
+    <mat-form-field>
+      <mat-label>From (UTC ISO)</mat-label>
+      <input matInput formControlName="fromUtc" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>To (UTC ISO)</mat-label>
+      <input matInput formControlName="toUtc" />
+    </mat-form-field>
+
+    <div class="range__actions">
+      <button
+        mat-stroked-button
+        (click)="loadSlots()"
+        [disabled]="rangeForm.invalid || loading()"
+      >
+        Load available slots
+      </button>
+
+      <mat-progress-spinner
+        *ngIf="loading()"
+        diameter="22"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    </div>
+  </form>
+
+  <div class="empty" *ngIf="!loading() && slots().length === 0">
+    No available slots for the selected range.
+  </div>
+
+  <mat-radio-group
+    class="slots"
+    [(ngModel)]="selectedSlotId"
+    *ngIf="slots().length > 0"
+  >
+    <mat-radio-button
+      class="slot"
+      *ngFor="let s of slots(); trackBy: trackById"
+      [value]="s.id"
+      (change)="selectedSlotId.set(s.id)"
+    >
+      <div class="slot__primary">{{ s.startUtc | date: 'medium' }}</div>
+      <div class="slot__secondary">{{ s.endUtc | date: 'shortTime' }}</div>
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<div mat-dialog-actions align="end" class="actions">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="confirm()"
+    [disabled]="!selectedSlotId()"
+  >
+    Reschedule
+  </button>
+</div>

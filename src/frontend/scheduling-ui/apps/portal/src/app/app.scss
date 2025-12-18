@@ -1,0 +1,15 @@
+.shell { height: 100vh; }
+.shell__sidenav { width: 280px; }
+.shell__toolbar { position: sticky; top: 0; z-index: 10; }
+.shell__content { background: #f6f7fb; }
+.page { padding: 24px; max-width: 1200px; margin: 0 auto; }
+
+.brand { padding: 16px 16px 8px; }
+.brand__title { font-size: 18px; font-weight: 700; }
+.brand__subtitle { font-size: 12px; opacity: 0.7; }
+
+.icon { margin-right: 12px; }
+.active { background: rgba(0, 0, 0, 0.06); }
+
+.spacer { flex: 1; }
+.muted { font-size: 12px; opacity: 0.7; }

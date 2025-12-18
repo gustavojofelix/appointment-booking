@@ -14,7 +14,17 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@scheduling-ui/data-access": [
+        "libs/scheduling/data-access/src/index.ts"
+      ],
+      "@scheduling-ui/feature-booking": [
+        "libs/scheduling/feature-booking/src/index.ts"
+      ],
+      "@scheduling-ui/feature-admin": [
+        "libs/scheduling/feature-admin/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
